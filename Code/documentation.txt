@@ -1,0 +1,104 @@
+- Use N=2 and place the particles without any velocity at x=(0.4,0.5,0.5) and x=(0.6,0.5,0.5). What happens qualitatively? Run your experiments with different time steps over a fixed time interval T. Ensure that T is chosen such that the sign of F at least flips twice. Track the final position. What can you observe w.r.t. accuracy and the ODE characteristics?
+
+- at small enough timesteps, the particles will attract and at a set distance the force will invert in such a way that the particles will repel along the same axis that they attracted along. This will continue until the radius is large enough for the force to invert again and the particles will then attract, this will start the cycle again. The wrap around force will have very little impact on this interaction as at the distances involved the force is almost negligable.
+If the timesteps are too large then the particles will move past each other with such force that they will "jump" past each other and there will be no ossolation.
+
+-  Rerun the same experiment with x=(0.1,0.5,0.5) and x=(0.9,0.5,0.5). What happens?
+
+- the same thing will happen as with the above experiment, except the main force will be the wrap around force and not the direct force.
+
+- Rerun the experiment with N=100, N=1,000, N=10,000, N=100,000, and so forth where all particles are placed randomly within the cube. As the cube is fixed, adding more particles increases the gas density, i.e. we start to study condensation/saturation processes. What can you observe quantitatively and what can you observe in terms of cost (time to solution)?
+
+- dependant on the timesteps used the quality of the simulation could be questionable. we will use hamilton to test time to run for each of the experiment
+
+
+Part 3
+- store a set of coordinates for a sphere around the current particle and check if the coordinates of the particle potentially exerting the force is within these coordinates then it will exert a force. This might be a bit coarse due to the number
+- cut the box up into smaller cubes, store which cube the particle is in and only other particles in this cube have any effect
+
+      /*
+        double otherX;
+        double otherY;
+        double otherZ;
+
+        if(normalX>0){
+          otherX = -1 + normalX;
+        }
+        else if(normalX<0){
+          otherX = 1 + normalX;
+        }
+        else{
+          otherX = 0;
+        }
+        // find the distance in the X direction
+        if(normalY>0){
+          otherY = -1 + normalY;
+        }
+        else if(normalY<0){
+          otherY = 1 + normalY;
+        }
+        else{
+          otherY = 0;
+        }
+        // find the distance in the X direction
+        if(normalZ>0){
+          otherZ = -1 + normalZ;
+        }
+        else if(normalZ<0){
+          otherZ = 1 + normalZ;
+        }
+        else{
+          otherZ = 0;
+        }
+        // find the distance in the X direction
+        // find the distance in each axis in wrap around
+        //printf("%E %E %E\n", otherX, otherY, otherZ);
+
+        distance = sqrt(otherX * otherX + otherY * otherY + otherZ * otherZ);
+        // calculate the euclidian distance between two particles in wrap around
+        //printf("%E\n", distance);
+  
+        if(distance < current_shortest){
+          current_shortest = distance;
+        }
+
+        double otherEuclidianForce = 4 * a * (((12 * pow(s,12)) / pow(distance,13)) - ((6 * pow(s,6))/pow(distance,7)));
+        // using the wrap around distance use the wrap around force
+
+        force[0] += otherX/distance * otherEuclidianForce;
+        force[1] += otherY/distance * otherEuclidianForce;
+        force[2] += otherZ/distance * otherEuclidianForce;
+        // split the forces into their x,y and z components
+        
+        //printf("Other X distance: %E, Total Distance: %E, Euclidian Force: %E, Total: %E\n", otherX, distance, otherEuclidianForce, otherX/distance * otherEuclidianForce);
+        //printf("Other Y distance: %E, Total Distance: %E, Euclidian Force: %E, Total: %E\n", otherY, distance, otherEuclidianForce, otherY/distance * otherEuclidianForce);
+        //printf("Other Z distance: %E, Total Distance: %E, Euclidian Force: %E, Total: %E\n", otherZ, distance, otherEuclidianForce, otherZ/distance * otherEuclidianForce);
+        //printf("\n");
+        */
+
+          /*
+  if (distance < 0.0001){
+    timeStepSize = distance;
+  }
+  else if(distance < 0.0005 && distance > 0.0001){
+    timeStepSize = distance * pow(10,1);
+  }
+  else if (distance < 0.001 && distance > 0.0005){
+    timeStepSize = distance * pow(10,2);
+  }
+  else if(distance < 0.005 && distance > 0.001){
+    timeStepSize = distance * pow(10,3);
+  }
+  else if (distance < 0.01 && distance > 0.005){
+    timeStepSize = distance * pow(10,4);
+  }
+  else if (distance < 0.05 && distance > 0.01){
+    timeStepSize = distance * pow(10,6);
+  }
+  else if(distance < 0.1 && distance > 0.05){
+    timeStepSize = distance * pow(10,8);
+  }
+  else if (distance > 0.1){
+    timeStepSize = distance * pow(10,10);
+  }
+  */
