@@ -199,8 +199,10 @@ void updateBody(int NumberOfParticles) {
 
 
 
+int main(int argc, char *argv[]) {
 
-int main() {
+  int NumberOfParticles_NEW = atoi(argv[1]);
+  printf("%d\n", NumberOfParticles_NEW);
 
   setUp(NumberOfParticles);
   printCSVFile(0);
