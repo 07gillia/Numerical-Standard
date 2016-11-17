@@ -1,0 +1,231 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "palatino" "default"
+\font_sans "helvet" "default"
+\font_typewriter "courier" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 95 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 0
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Computing Methodologies III – Numerical Algorithms
+\end_layout
+
+\begin_layout Section*
+Step One
+\end_layout
+
+\begin_layout Standard
+Start with a set number of particles and timesteps, using a random number
+ generator each particle is given an x, y and z coordinate.
+ The interaction will start by iterating through every particle in the simulatio
+n, for each one calculating the euclidian distance from the current particle
+ and each other particle and using this distance to calculate the force
+ on the current particle, this will then be split into its constituent parts,
+ x,y and z.
+ These are summated to give the total force in each direction for each particle.
+ Whilst iterating through each particle pair, the shortest distance between
+ any particle pair is stored, this will be used to calculate the timestep,
+ intially the time step is set to the minimum possible value.
+ A variable timestep is used because of the tendency of particle to accelerate
+ together, due to the implementation it will do this in jumps, if the timestep
+ is too large then the particle will pass each other without the particles
+ ever being close enough to repel and will thus not be an accurate model.
+ The way that I calculate the timestep is based on experimental data, I
+ set two particles at closer and closer distances together and set a timestep
+ that I thought was acceptable, I then created a stepped timestep such that
+ if the shortest distance between any two particle pairs was between two
+ thresholds then the timestep would change based on this, and when the distance
+ dropped bellow the lower threshold then the timestep would change, this
+ was jerky with the particles accelerating together then coming to a halt
+ as the timestep changed.
+ To overcome the stepping I plotted threshold/timstep points and used a
+ line of best fit to give me the equation of the line that would best fit
+ the threshods I had found.
+ The equation happened to be the shortest distance^(2.7469) * 10^10.
+ This was accurate above a distance of 0.00015 at this point just the minimum
+ distance was usedas the timestep, this allows high accuracy at very short
+ distances.
+ The only other feature of the simulation is periodic bounding, I had done
+ this by modulo mathematics but this introduced a few issues, so decided
+ that comparision was faster and more reliable.
+ The comparisions are done is such a way that they are used every time a
+ particle has its coordinates changed.
+\end_layout
+
+\begin_layout Standard
+- Having issues with raace conditions
+\end_layout
+
+\begin_layout Standard
+- extra dimentions ( hardcoded array)
+\end_layout
+
+\begin_layout Standard
+- screenshots
+\end_layout
+
+\begin_layout Section*
+Step Two
+\end_layout
+
+\begin_layout Standard
+- N = 2, 1 at 0.4 2 at 0.6 with no velocity
+\end_layout
+
+\begin_layout Standard
+- occilation at variable time steps
+\end_layout
+
+\begin_layout Standard
+- at low time steps the particals initally don't move at all for a very
+ long time then when they do eventually come together and occilate as they
+ do in the variable timestep simulation
+\end_layout
+
+\begin_layout Standard
+- at high time steps the particles will pass each other then come back and
+ this will cause some issues
+\end_layout
+
+\begin_layout Standard
+- they will initally come together and then each of the different timesteps
+ will have it's own effect, if they oscilate they will do so around the
+ 0.5 mark
+\end_layout
+
+\begin_layout Standard
+-
+\end_layout
+
+\begin_layout Standard
+- at 0.1 and 0.9 they will do the same but the ocilation point will be 0.0
+ due to the periodic bounding conditions
+\end_layout
+
+\begin_layout Standard
+- everything else will be the same
+\end_layout
+
+\begin_layout Standard
+- 
+\end_layout
+
+\begin_layout Standard
+- run all the Ns
+\end_layout
+
+\begin_layout Standard
+- talk about this when we have results
+\end_layout
+
+\begin_layout Standard
+- what happens
+\end_layout
+
+\begin_layout Standard
+- how long does it take to compute
+\end_layout
+
+\begin_layout Section*
+Step Three
+\end_layout
+
+\begin_layout Standard
+- talk about what we implemented, verlet lists
+\end_layout
+
+\begin_layout Standard
+- the results doesn't change for variable time steps
+\end_layout
+
+\begin_layout Standard
+- for large time steps - 
+\end_layout
+
+\begin_layout Standard
+- for small timesteps - 
+\end_layout
+
+\begin_layout Standard
+- it is still resonably correct
+\end_layout
+
+\begin_layout Standard
+- very significant run time - show experimentally 
+\end_layout
+
+\begin_layout Standard
+-
+\end_layout
+
+\begin_layout Standard
+- taylor expansion?
+\end_layout
+
+\end_body
+\end_document
