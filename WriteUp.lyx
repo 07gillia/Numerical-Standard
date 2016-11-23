@@ -84,45 +84,61 @@ Start with a set number of particles and timesteps, using a random number
  generator each particle is given an x, y and z coordinate.
  The interaction will start by iterating through every particle in the simulatio
 n, for each one calculating the euclidian distance from the current particle
- and each other particle and using this distance to calculate the force
- on the current particle, this will then be split into its constituent parts,
+ to each other particle and using this distance to calculate the force on
+ the current particle, this will then be split into its constituent parts,
  x,y and z.
  These are summated to give the total force in each direction for each particle.
  Whilst iterating through each particle pair, the shortest distance between
  any particle pair is stored, this will be used to calculate the timestep,
- intially the time step is set to the minimum possible value.
+ initially the time step is set to the minimum possible value.
  A variable timestep is used because of the tendency of particle to accelerate
  together, due to the implementation it will do this in jumps, if the timestep
  is too large then the particle will pass each other without the particles
  ever being close enough to repel and will thus not be an accurate model.
  The way that I calculate the timestep is based on experimental data, I
  set two particles at closer and closer distances together and set a timestep
- that I thought was acceptable, I then created a stepped timestep such that
- if the shortest distance between any two particle pairs was between two
- thresholds then the timestep would change based on this, and when the distance
- dropped bellow the lower threshold then the timestep would change, this
- was jerky with the particles accelerating together then coming to a halt
- as the timestep changed.
- To overcome the stepping I plotted threshold/timstep points and used a
+ that I thought was acceptable based on paraview play speed, I then created
+ a stepped timestep such that if the shortest distance between any two particle
+ pairs was between two thresholds then the timestep would change based on
+ this, and when the distance dropped bellow the lower threshold then the
+ timestep would change, this was jerky with the particles accelerating together
+ then coming to a halt as the timestep changed, this was done several times
+ as the distance between any two particles lessened.
+ To overcome the stepping I plotted threshold/timestep points and used a
  line of best fit to give me the equation of the line that would best fit
- the threshods I had found.
+ the thresholds I had found.
  The equation happened to be the shortest distance^(2.7469) * 10^10.
  This was accurate above a distance of 0.00015 at this point just the minimum
- distance was usedas the timestep, this allows high accuracy at very short
+ distance was used as the timestep, this allows high accuracy at very short
  distances.
  The only other feature of the simulation is periodic bounding, I had done
  this by modulo mathematics but this introduced a few issues, so decided
- that comparision was faster and more reliable.
- The comparisions are done is such a way that they are used every time a
+ that comparison was faster and more reliable.
+ The comparisons are done is such a way that they are used every time a
  particle has its coordinates changed.
+ The particles will have their coordinates changed after all the forces
+ have been calculated for every particle, this improves accuracy as the
+ first particle doesn't have it's coordinates changed then this new position
+ is used for the other particles in the simulation.
+ An improvement that I did make was to reduce the number of euclidian distances
+ calculated was to use force calculated on the current particle on the other
+ particle as well, this has the affect of halving the number of euclidian
+ distance calculation and force calculations that have been done.
+ The way I have implemented wrap around forces is to iterate through the
+ 27 or 7 different dimensions, dependent on the file, I have run both to
+ test run times.
+ Each of the dimensions corresponds to an index in an array that stores
+ the change in coordinates that a particle would have to go through to translate
+ to the corresponding mirror particle, this mirror particle is then used
+ to calculate the force on the current particle from the wrap around in
+ that direction.
+ If this were to be made more accurate then the wrap around would be done
+ for an infinite number of wrap around forces, this is unfeasible so I have
+ done it for both 27 and 7.
 \end_layout
 
 \begin_layout Standard
-- Having issues with raace conditions
-\end_layout
-
-\begin_layout Standard
-- extra dimentions ( hardcoded array)
+- youtube links
 \end_layout
 
 \begin_layout Standard
@@ -138,12 +154,12 @@ Step Two
 \end_layout
 
 \begin_layout Standard
-- occilation at variable time steps
+- oscillation at variable time steps
 \end_layout
 
 \begin_layout Standard
-- at low time steps the particals initally don't move at all for a very
- long time then when they do eventually come together and occilate as they
+- at low time steps the particles initially don't move at all for a very
+ long time then when they do eventually come together and oscillate as they
  do in the variable timestep simulation
 \end_layout
 
@@ -153,8 +169,8 @@ Step Two
 \end_layout
 
 \begin_layout Standard
-- they will initally come together and then each of the different timesteps
- will have it's own effect, if they oscilate they will do so around the
+- they will initially come together and then each of the different timesteps
+ will have it's own effect, if they oscillate they will do so around the
  0.5 mark
 \end_layout
 
@@ -163,7 +179,7 @@ Step Two
 \end_layout
 
 \begin_layout Standard
-- at 0.1 and 0.9 they will do the same but the ocilation point will be 0.0
+- at 0.1 and 0.9 they will do the same but the oscillation point will be 0.0
  due to the periodic bounding conditions
 \end_layout
 
@@ -196,6 +212,21 @@ Step Three
 \end_layout
 
 \begin_layout Standard
+The data structure I used is an variable length array of vectors, each vector
+ corresponding to one of the particles present.
+ At set time steps, these vectors are populated with two pieces of data
+ for the corresponding particle, the particle index and the index of the
+ translations done to the current particle.
+ At any other timesteps, the vector for each particle is iterated through
+ and the distances and forces are only calculated for any particle that
+ is present in the vector.
+ This is so that any particle that is not close enough to the current particle
+ is not calculated as in theory the force exerted by a particle this far
+ off is negligible.
+ 
+\end_layout
+
+\begin_layout Standard
 - talk about what we implemented, verlet lists
 \end_layout
 
@@ -212,7 +243,7 @@ Step Three
 \end_layout
 
 \begin_layout Standard
-- it is still resonably correct
+- it is still reasonably correct
 \end_layout
 
 \begin_layout Standard
@@ -224,7 +255,7 @@ Step Three
 \end_layout
 
 \begin_layout Standard
-- taylor expansion?
+- Taylor expansion?
 \end_layout
 
 \end_body
