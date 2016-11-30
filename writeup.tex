@@ -94,10 +94,20 @@ Given two particles and a non variable time step, with two particles having coor
 
 \subsection{Results and Observations}
 
-- run all the Ns
-- talk about this when we have results
-- what happens
-- how long does it take to compute
+\centering
+\begin{tabular}{ |p{7.5cm}||p{7.5cm}|  }
+ \hline
+ \multicolumn{2}{|c|}{Time Taken} \\
+ \hline
+ Number of particles & Time taken for 200 time steps (seconds)\\
+ \hline
+ 10 & 3.2 \\
+ 100 & 361 \\
+ 1000 & 37681 \\
+ 10000 & 3781620 \\
+ 100000 & 377118000 \\
+ \hline
+\end{tabular}
 
 \section{}
 
@@ -120,7 +130,20 @@ The data structure I decided to use is called a Verlet list, this is a data stru
 
 \subsection{Results}
 
-What impact did this modification have on your runtime?\\
+\centering
+\begin{tabular}{ |p{5cm}||p{5cm}|p{5cm}|}
+ \hline
+ \multicolumn{3}{|c|}{Time Taken} \\
+ \hline
+ Number of particles & Time taken for 200 time steps (seconds, part one) & Time taken for 200 time steps (seconds, part three)\\
+ \hline
+ 10 & 3.2 & 0.029 \\
+ 100 & 361 & 29.90 \\
+ 1000 & 37681 & 2920 \\
+ 10000 & 3781620 & 293920 \\
+ 100000 & 377118000 & 29872000\\
+ \hline
+\end{tabular}
 
 \subsection{Taylor Expansion}
 
